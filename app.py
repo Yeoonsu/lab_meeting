@@ -35,13 +35,16 @@ if uploaded_file is not None:
         lambda x: pd.Series(extract_info(x))
     )
     
-    # content에서 accuracy 추출
+    # content에서 accuracy 및 fscore 추출
     df['accuracy'] = df['content'].apply(
         lambda x: json.loads(x.replace("'", '"'))['overall_accuracy']
     )
+    df['fscore'] = df['content'].apply(
+        lambda x: json.loads(x.replace("'", '"')).get('overall_fscore', None)
+    )
     
     # 새로운 데이터프레임 생성
-    new_df = df[['type1', 'type2', 'accuracy']]
+    new_df = df[['type1', 'type2', 'accuracy', 'fscore']]
     
     # 데이터프레임 출력
     st.subheader('Transformed DataFrame')
