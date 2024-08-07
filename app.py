@@ -3,7 +3,7 @@ import pandas as pd
 
 # Streamlit 제목
 st.title('Hello Professor!')
-st.subtitle('This is CSV viewer made by Yeonsu :star2:')
+st.subheader('This is CSV viewer made by Yeonsu :star2:')
 
 # 파일 업로드
 uploaded_file = st.file_uploader("Upload CSV file", type="csv")
