@@ -20,6 +20,9 @@ if uploaded_file is not None:
     # 새로운 데이터프레임 생성
     new_df = df[['type1', 'type2', 'content']]
     
+    # Sorting the DataFrame by type1 and type2
+    new_df = new_df.sort_values(by=['type1', 'type2'])
+    
     # 데이터프레임 출력
     st.subheader('Transformed DataFrame')
     st.write(new_df)
