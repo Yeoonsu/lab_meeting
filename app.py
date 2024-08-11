@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import ast
 
-st.title("Grouped Data Visualization with Line and Bar Plots")
+st.title("Data Visualization Tool")
 st.caption("made by Yeonsu Kim")
 
 # File uploader
