@@ -1,11 +1,11 @@
 import streamlit as st
 import pandas as pd
-import ast
 import matplotlib.pyplot as plt
 import seaborn as sns
+import ast
 
-st.title("Data Processing and Visualization App")
-st.markdown("made by Yeonsu Kim")
+st.title("Grouped Data Visualization with Line and Bar Plots")
+st.caption("made by Yeonsu Kim")
 
 # File uploader
 uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
@@ -42,31 +42,68 @@ if uploaded_file is not None:
     data['overall_accuracy'] = data['content'].apply(extract_overall_accuracy_v2)
     data['overall_fscore'] = data['content'].apply(extract_overall_fscore_v2)
 
-    # Display processed data
-    st.write("Processed Data:", data)
+    # Grouping the data by train and test and calculating the mean for overall_accuracy and overall_fscore
+    grouped_data = data.groupby(['train', 'test']).mean().reset_index()
 
-    # Save the processed data to a new CSV (optional)
-    save_option = st.checkbox("Save processed data to CSV")
-    if save_option:
-        data.to_csv('output2.csv', index=False)
-        st.write("Processed data saved to `output2.csv`.")
+    # Plotting the line plots for overall_accuracy and overall_fscore
+    st.subheader("Line Plots of Overall Accuracy and Fscore")
+    plt.figure(figsize=(14, 8))
 
-    # Visualization
-    st.subheader("Data Visualization")
+    # Line Plotting overall_accuracy
+    plt.subplot(1, 2, 1)
+    sns.lineplot(data=grouped_data, x='train', y='overall_accuracy', hue='test', marker='o')
+    plt.title('Overall Accuracy by train and test')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
 
-    # Set the aesthetic style of the plots
-    sns.set_style('whitegrid')
+    # Line Plotting overall_fscore
+    plt.subplot(1, 2, 2)
+    sns.lineplot(data=grouped_data, x='train', y='overall_fscore', hue='test', marker='o')
+    plt.title('Overall Fscore by train and test')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
 
-    # Create a figure and a set of subplots
-    fig, axes = plt.subplots(1, 2, figsize=(14, 6))
+    # Display the line plots in Streamlit
+    st.pyplot(plt)
 
-    # Plotting the 'overall_accuracy' values
-    sns.histplot(data['overall_accuracy'], bins=10, ax=axes[0])
-    axes[0].set_title('Distribution of Overall Accuracy')
+    # Plotting the bar plots for overall_accuracy and overall_fscore
+    st.subheader("Bar Plots of Overall Accuracy and Fscore")
+    plt.figure(figsize=(14, 8))
 
-    # Plotting the 'overall_fscore' values
-    sns.histplot(data['overall_fscore'], bins=10, ax=axes[1])
-    axes[1].set_title('Distribution of Overall F-score')
+    # Bar Plotting overall_accuracy
+    plt.subplot(1, 2, 1)
+    sns.barplot(data=grouped_data, x='train', y='overall_accuracy', hue='test')
+    plt.title('Overall Accuracy by train and test')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
 
-    # Display the plots in Streamlit
-    st.pyplot(fig)
+    # Bar Plotting overall_fscore
+    plt.subplot(1, 2, 2)
+    sns.barplot(data=grouped_data, x='test', y='overall_fscore', hue='test')
+    plt.title('Overall Fscore by train and test')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Display the bar plots in Streamlit
+    st.pyplot(plt)
+
+    # Additional line plots for overall_accuracy and overall_fscore with 'train' and 'test'
+    st.subheader("Additional Line Plots of Overall Accuracy and Fscore")
+    plt.figure(figsize=(14, 8))
+
+    # Line Plotting overall_accuracy
+    plt.subplot(1, 2, 1)
+    sns.lineplot(data=grouped_data, x='train', y='overall_accuracy', hue='test', marker='o')
+    plt.title('Overall Accuracy by train and test')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Line Plotting overall_fscore
+    plt.subplot(1, 2, 2)
+    sns.lineplot(data=grouped_data, x='train', y='overall_fscore', hue='test', marker='o')
+    plt.title('Overall Fscore by train and test')
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    # Display the additional line plots in Streamlit
+    st.pyplot(plt)
