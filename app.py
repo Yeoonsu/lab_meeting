@@ -42,8 +42,9 @@ if uploaded_file is not None:
     data['overall_accuracy'] = data['content'].apply(extract_overall_accuracy_v2)
     data['overall_fscore'] = data['content'].apply(extract_overall_fscore_v2)
 
-    # Grouping the data by train and test and calculating the mean for overall_accuracy and overall_fscore
-    grouped_data = data.groupby(['train', 'test']).mean().reset_index()
+    # Ensure only numeric columns are included in the groupby mean calculation
+    numeric_columns = ['overall_accuracy', 'overall_fscore']
+    grouped_data = data.groupby(['train', 'test'])[numeric_columns].mean().reset_index()
 
     # Plotting the line plots for overall_accuracy and overall_fscore
     st.subheader("Line Plots of Overall Accuracy and Fscore")
