@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import ast
@@ -6,6 +5,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 st.title("Data Processing and Visualization App")
+st.markdown("made by Yeonsu Kim")
 
 # File uploader
 uploaded_file = st.file_uploader("Upload your CSV file", type=["csv"])
