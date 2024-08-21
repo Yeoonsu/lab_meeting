@@ -62,21 +62,28 @@ if uploaded_file is not None:
     numeric_columns = ['overall_accuracy', 'overall_fscore']
     grouped_data = data.groupby('group')[numeric_columns].mean().reset_index()
     
-    # Plotting the line plots for overall_accuracy and overall_fscore
-    st.subheader("Line Plots of Overall Accuracy and Fscore")
+    # Plotting the line plots for overall_accuracy and overall_fscore by each group
+    st.subheader("Line Plots of Overall Accuracy and Fscore by Group")
 
-    # Line Plotting overall_accuracy
-    plt.figure(figsize=(10, 6))
-    sns.lineplot(data=grouped_data, x='group', y='overall_accuracy', marker='o')
-    plt.title('Overall Accuracy by Group')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    st.pyplot(plt)
+    groups = grouped_data['group'].unique()
+    
+    for group in groups:
+        group_data = grouped_data[grouped_data['group'] == group]
 
-    # Line Plotting overall_fscore
-    plt.figure(figsize=(10, 6))
-    sns.lineplot(data=grouped_data, x='group', y='overall_fscore', marker='o')
-    plt.title('Overall Fscore by Group')
-    plt.xticks(rotation=45)
-    plt.tight_layout()
-    st.pyplot(plt)
+        # Plotting overall_accuracy
+        st.write(f"Group: {group} - Overall Accuracy")
+        plt.figure(figsize=(10, 6))
+        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o')
+        plt.title(f'Overall Accuracy for {group}')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        st.pyplot(plt)
+
+        # Plotting overall_fscore
+        st.write(f"Group: {group} - Overall Fscore")
+        plt.figure(figsize=(10, 6))
+        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o')
+        plt.title(f'Overall Fscore for {group}')
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        st.pyplot(plt)
