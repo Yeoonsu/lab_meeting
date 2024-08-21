@@ -40,7 +40,7 @@ if uploaded_file is not None:
     data['test_group'] = data['test'].str.split('-').str[0]
     
     # Defining the final group column
-    data['group'] = data['train_group'] + ' - ' + data['test_group']
+    data['group'] = data['train'] + ' - ' + data['test']
         
     # Selecting relevant columns
     data = data[['group', 'train_group', 'test_group', 'content']]
