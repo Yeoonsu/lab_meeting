@@ -63,12 +63,12 @@ if uploaded_file is not None:
         file_name='processed_data.csv',
         mime='text/csv',
     )
-    
-    # Plotting the line plots for overall_accuracy and overall_fscore by each train group (comp, freq3, missing)
-    st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group and Test Group")
 
-    train_groups = ['comp', 'freq3', 'missing']
-    test_groups = ['missing', 'comp', 'freq3']  # 모든 train group에 대해 해당 test group을 매칭시키기 위한 리스트
+    # Plotting the line plots for overall_accuracy and overall_fscore by each train group (comp, freq3, missing)
+    st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group and Test Group (Including Clean)")
+
+    train_groups = ['comp', 'freq3', 'missing', 'clean']
+    test_groups = ['missing', 'comp', 'freq3', 'clean']  # Clean을 포함한 모든 그룹
 
     for train_group in train_groups:
         for test_group in test_groups:
@@ -80,10 +80,17 @@ if uploaded_file is not None:
                 group_data = group_data.sort_values(by=['train', 'test'])
                 
                 # Plotting overall_accuracy
-                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
+                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Including Clean)")
                 plt.figure(figsize=(10, 6))
-                sns.lineplot(data=group_data, x='train', y='overall_accuracy', marker='o', label='Train Group Accuracy')
+                sns.lineplot(data=group_data, x='train', y='overall_accuracy', marker='o', label='Overall Accuracy')
                 sns.lineplot(data=group_data, x='test', y='overall_accuracy', marker='o', label='Test Group Accuracy')
+                
+                # Include clean data in the plot
+                clean_data = data[(data['train_group'] == 'clean') | (data['test_group'] == 'clean')]
+                if not clean_data.empty:
+                    clean_data = clean_data.sort_values(by=['train', 'test'])
+                    sns.lineplot(data=clean_data, x='train', y='overall_accuracy', marker='o', label='Clean Accuracy')
+                
                 plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
                 plt.xlabel('Train and Test Values')
                 plt.ylabel('Overall Accuracy')
@@ -93,10 +100,15 @@ if uploaded_file is not None:
                 st.pyplot(plt)
 
                 # Plotting overall_fscore
-                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore")
+                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Including Clean)")
                 plt.figure(figsize=(10, 6))
-                sns.lineplot(data=group_data, x='train', y='overall_fscore', marker='o', label='Train Group Fscore')
+                sns.lineplot(data=group_data, x='train', y='overall_fscore', marker='o', label='Overall Fscore')
                 sns.lineplot(data=group_data, x='test', y='overall_fscore', marker='o', label='Test Group Fscore')
+                
+                # Include clean data in the plot
+                if not clean_data.empty:
+                    sns.lineplot(data=clean_data, x='train', y='overall_fscore', marker='o', label='Clean Fscore')
+                
                 plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
                 plt.xlabel('Train and Test Values')
                 plt.ylabel('Overall Fscore')
@@ -104,3 +116,4 @@ if uploaded_file is not None:
                 plt.legend()
                 plt.tight_layout()
                 st.pyplot(plt)
+
