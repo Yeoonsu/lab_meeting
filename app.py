@@ -34,7 +34,21 @@ if uploaded_file is not None:
     # Extracting 'train' and 'test'
     data['train'] = data['file_name'].str.split('--').str[0].str.split('-').str[3:5].str.join('-')
     data['test'] = data['file_name'].str.split('--').str[1].str.split('-').str[1:3].str.join('-')
-    data['group'] = data['train'] + ' - ' + data['test']
+    
+    # Extract comp, freq3, missing from train and test
+    data['comp_train'] = data['train'].str.split('-').str[0]
+    data['freq3_train'] = data['train'].str.split('-').str[1]
+    data['missing_train'] = data['train'].str.split('-').str[2]
+    
+    data['comp_test'] = data['test'].str.split('-').str[0]
+    data['freq3_test'] = data['test'].str.split('-').str[1]
+    data['missing_test'] = data['test'].str.split('-').str[2]
+    
+    # Group by comp, freq3, missing
+    data['group'] = (
+        data['comp_train'] + '-' + data['freq3_train'] + '-' + data['missing_train'] + ' / ' +
+        data['comp_test'] + '-' + data['freq3_test'] + '-' + data['missing_test']
+    )
         
     # Selecting relevant columns
     data = data[['group', 'train', 'test', 'content']]
@@ -58,30 +72,28 @@ if uploaded_file is not None:
         mime='text/csv',
     )
     
-    # Plotting the line plots for overall_accuracy and overall_fscore by each train-test group
-    st.subheader("Line Plots of Overall Accuracy and Fscore by Train-Test Groups")
+    # Plotting the line plots for overall_accuracy and overall_fscore by each group
+    st.subheader("Line Plots of Overall Accuracy and Fscore by Comp, Freq3, Missing Groups")
 
-    groups = data[['train', 'test']].drop_duplicates()
+    groups = data['group'].unique()
 
-    for _, row in groups.iterrows():
-        train_value = row['train']
-        test_value = row['test']
-        group_data = data[(data['train'] == train_value) & (data['test'] == test_value)]
+    for group in groups:
+        group_data = data[data['group'] == group]
 
         # Plotting overall_accuracy
-        st.write(f"Train: {train_value}, Test: {test_value} - Overall Accuracy")
+        st.write(f"Group: {group} - Overall Accuracy")
         plt.figure(figsize=(10, 6))
-        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o')
-        plt.title(f'Overall Accuracy for Train: {train_value}, Test: {test_value}')
+        sns.lineplot(data=group_data, x='train', y='overall_accuracy', marker='o')
+        plt.title(f'Overall Accuracy for Group: {group}')
         plt.xticks(rotation=45)
         plt.tight_layout()
         st.pyplot(plt)
 
         # Plotting overall_fscore
-        st.write(f"Train: {train_value}, Test: {test_value} - Overall Fscore")
+        st.write(f"Group: {group} - Overall Fscore")
         plt.figure(figsize=(10, 6))
-        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o')
-        plt.title(f'Overall Fscore for Train: {train_value}, Test: {test_value}')
+        sns.lineplot(data=group_data, x='train', y='overall_fscore', marker='o')
+        plt.title(f'Overall Fscore for Group: {group}')
         plt.xticks(rotation=45)
         plt.tight_layout()
         st.pyplot(plt)
