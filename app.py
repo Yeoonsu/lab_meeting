@@ -36,8 +36,8 @@ if uploaded_file is not None:
     data['test'] = data['file_name'].str.split('--').str[1].str.split('-').str[1:3].str.join('-')
     
     # Defining train_group and test_group
-    data['train_group'] = data['train']
-    data['test_group'] = data['test']
+    data['train_group'] = data['train'].str.split('-').str[0]
+    data['test_group'] = data['test'].str.split('-').str[0]
     
     # Defining the final group column
     data['group'] = data['train_group'] + ' - ' + data['test_group']
