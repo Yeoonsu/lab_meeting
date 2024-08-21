@@ -63,34 +63,41 @@ if uploaded_file is not None:
         file_name='processed_data.csv',
         mime='text/csv',
     )
+    
     # Plotting the line plots for overall_accuracy and overall_fscore by each train group (comp, freq3, missing)
-    st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group")
+    st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group and Test Group")
 
     train_groups = ['comp', 'freq3', 'missing']
+    test_groups = ['missing', 'comp', 'freq3']  # 모든 train group에 대해 해당 test group을 매칭시키기 위한 리스트
 
     for train_group in train_groups:
-    # Filter the data for the current train_group
-        group_data = data[data['train_group'] == train_group]
-    
-        if not group_data.empty:
-            # Plotting overall_accuracy
-            st.write(f"Train Group: {train_group} - Overall Accuracy")
-            plt.figure(figsize=(10, 6))
-            sns.lineplot(data=group_data, x='test_group', y='overall_accuracy', marker='o')
-            plt.title(f'Overall Accuracy for Train Group: {train_group}')
-            plt.xlabel('Test Group')
-            plt.ylabel('Overall Accuracy')
-            plt.xticks(rotation=45)
-            plt.tight_layout()
-            st.pyplot(plt)
+        for test_group in test_groups:
+            # Filter the data for the current train_group and test_group
+            group_data = data[(data['train_group'] == train_group) & (data['test_group'] == test_group)]
+            
+            if not group_data.empty:
+                # Plotting overall_accuracy
+                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
+                plt.figure(figsize=(10, 6))
+                sns.lineplot(data=group_data, x='train', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                sns.lineplot(data=group_data, x='test', y='overall_accuracy', marker='o', label='Test Group Accuracy')
+                plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
+                plt.xlabel('Train and Test Values')
+                plt.ylabel('Overall Accuracy')
+                plt.xticks(rotation=45)
+                plt.legend()
+                plt.tight_layout()
+                st.pyplot(plt)
 
-            # Plotting overall_fscore
-            st.write(f"Train Group: {train_group} - Overall Fscore")
-            plt.figure(figsize=(10, 6))
-            sns.lineplot(data=group_data, x='test_group', y='overall_fscore', marker='o')
-            plt.title(f'Overall Fscore for Train Group: {train_group}')
-            plt.xlabel('Test Group')
-            plt.ylabel('Overall Fscore')
-            plt.xticks(rotation=45)
-            plt.tight_layout()
-            st.pyplot(plt)
+                # Plotting overall_fscore
+                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore")
+                plt.figure(figsize=(10, 6))
+                sns.lineplot(data=group_data, x='train', y='overall_fscore', marker='o', label='Overall Fscore')
+                sns.lineplot(data=group_data, x='test', y='overall_fscore', marker='o', label='Test Group Fscore')
+                plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
+                plt.xlabel('Train and Test Values')
+                plt.ylabel('Overall Fscore')
+                plt.xticks(rotation=45)
+                plt.legend()
+                plt.tight_layout()
+                st.pyplot(plt)
