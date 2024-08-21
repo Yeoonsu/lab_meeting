@@ -63,21 +63,23 @@ if uploaded_file is not None:
         file_name='processed_data.csv',
         mime='text/csv',
     )
-    
     # Plotting the line plots for overall_accuracy and overall_fscore by each train group (comp, freq3, missing)
     st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group")
 
     train_groups = ['comp', 'freq3', 'missing']
 
     for train_group in train_groups:
+    # Filter the data for the current train_group
         group_data = data[data['train_group'] == train_group]
-
+    
         if not group_data.empty:
             # Plotting overall_accuracy
             st.write(f"Train Group: {train_group} - Overall Accuracy")
             plt.figure(figsize=(10, 6))
             sns.lineplot(data=group_data, x='test_group', y='overall_accuracy', marker='o')
             plt.title(f'Overall Accuracy for Train Group: {train_group}')
+            plt.xlabel('Test Group')
+            plt.ylabel('Overall Accuracy')
             plt.xticks(rotation=45)
             plt.tight_layout()
             st.pyplot(plt)
@@ -87,6 +89,8 @@ if uploaded_file is not None:
             plt.figure(figsize=(10, 6))
             sns.lineplot(data=group_data, x='test_group', y='overall_fscore', marker='o')
             plt.title(f'Overall Fscore for Train Group: {train_group}')
+            plt.xlabel('Test Group')
+            plt.ylabel('Overall Fscore')
             plt.xticks(rotation=45)
             plt.tight_layout()
             st.pyplot(plt)
