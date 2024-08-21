@@ -34,16 +34,17 @@ if uploaded_file is not None:
     # Extracting 'train' and 'test'
     data['train'] = data['file_name'].str.split('--').str[0].str.split('-').str[3:5].str.join('-')
     data['test'] = data['file_name'].str.split('--').str[1].str.split('-').str[1:3].str.join('-')
-    
+    data['group'] = data['train'] + ' - ' + data['test']
+        
     # Selecting relevant columns
-    data = data[['train', 'test', 'content']]
+    data = data[['group', 'train', 'test', 'content']]
     
     # Applying the extraction functions
     data['overall_accuracy'] = data['content'].apply(extract_overall_accuracy_v2)
     data['overall_fscore'] = data['content'].apply(extract_overall_fscore_v2)
 
     # Finalizing the dataset to display and download
-    data = data[['train', 'test', 'overall_accuracy', 'overall_fscore']]
+    data = data[['group', 'train', 'test', 'overall_accuracy', 'overall_fscore']]
     
     # Display the processed data
     st.write("Processed Data:", data)
@@ -59,7 +60,7 @@ if uploaded_file is not None:
     
     # Ensure only numeric columns are included in the groupby mean calculation
     numeric_columns = ['overall_accuracy', 'overall_fscore']
-    grouped_data = data.groupby(['train', 'test'])[numeric_columns].mean().reset_index()
+    grouped_data = data.groupby('group')[numeric_columns].mean().reset_index()
     
     # Plotting the line plots for overall_accuracy and overall_fscore
     st.subheader("Line Plots of Overall Accuracy and Fscore")
