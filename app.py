@@ -82,7 +82,7 @@ if uploaded_file is not None:
                 # Plotting overall_accuracy
                 st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
                 plt.figure(figsize=(10, 6))
-                sns.lineplot(data=group_data, x='train', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                sns.lineplot(data=group_data, x='train', y='overall_accuracy', marker='o', label='Train Group Accuracy')
                 sns.lineplot(data=group_data, x='test', y='overall_accuracy', marker='o', label='Test Group Accuracy')
                 plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
                 plt.xlabel('Train and Test Values')
@@ -95,7 +95,7 @@ if uploaded_file is not None:
                 # Plotting overall_fscore
                 st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore")
                 plt.figure(figsize=(10, 6))
-                sns.lineplot(data=group_data, x='train', y='overall_fscore', marker='o', label='Overall Fscore')
+                sns.lineplot(data=group_data, x='train', y='overall_fscore', marker='o', label='Train Group Fscore')
                 sns.lineplot(data=group_data, x='test', y='overall_fscore', marker='o', label='Test Group Fscore')
                 plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
                 plt.xlabel('Train and Test Values')
