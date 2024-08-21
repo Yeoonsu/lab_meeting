@@ -50,7 +50,7 @@ if uploaded_file is not None:
     data['overall_fscore'] = data['content'].apply(extract_overall_fscore_v2)
 
     # Finalizing the dataset to display and download
-    data = data[['group', 'train_group', 'test_group', 'overall_accuracy', 'overall_fscore']]
+    data = data[['group', 'train', 'test', 'overall_accuracy', 'overall_fscore']]
     
     # Display the processed data
     st.write("Processed Data:", data)
