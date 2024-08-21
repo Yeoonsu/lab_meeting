@@ -58,32 +58,30 @@ if uploaded_file is not None:
         mime='text/csv',
     )
     
-    # Ensure only numeric columns are included in the groupby mean calculation
-    numeric_columns = ['overall_accuracy', 'overall_fscore']
-    grouped_data = data.groupby('group')[numeric_columns].mean().reset_index()
-    
-    # Plotting the line plots for overall_accuracy and overall_fscore by each group
-    st.subheader("Line Plots of Overall Accuracy and Fscore by Group")
+    # Plotting the line plots for overall_accuracy and overall_fscore by each train-test group
+    st.subheader("Line Plots of Overall Accuracy and Fscore by Train-Test Groups")
 
-    groups = grouped_data['group'].unique()
-    
-    for group in groups:
-        group_data = grouped_data[grouped_data['group'] == group]
+    groups = data[['train', 'test']].drop_duplicates()
+
+    for _, row in groups.iterrows():
+        train_value = row['train']
+        test_value = row['test']
+        group_data = data[(data['train'] == train_value) & (data['test'] == test_value)]
 
         # Plotting overall_accuracy
-        st.write(f"Group: {group} - Overall Accuracy")
+        st.write(f"Train: {train_value}, Test: {test_value} - Overall Accuracy")
         plt.figure(figsize=(10, 6))
         sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o')
-        plt.title(f'Overall Accuracy for {group}')
+        plt.title(f'Overall Accuracy for Train: {train_value}, Test: {test_value}')
         plt.xticks(rotation=45)
         plt.tight_layout()
         st.pyplot(plt)
 
         # Plotting overall_fscore
-        st.write(f"Group: {group} - Overall Fscore")
+        st.write(f"Train: {train_value}, Test: {test_value} - Overall Fscore")
         plt.figure(figsize=(10, 6))
         sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o')
-        plt.title(f'Overall Fscore for {group}')
+        plt.title(f'Overall Fscore for Train: {train_value}, Test: {test_value}')
         plt.xticks(rotation=45)
         plt.tight_layout()
         st.pyplot(plt)
