@@ -64,21 +64,19 @@ if uploaded_file is not None:
     
     # Plotting the line plots for overall_accuracy and overall_fscore
     st.subheader("Line Plots of Overall Accuracy and Fscore")
-    plt.figure(figsize=(14, 8))
 
     # Line Plotting overall_accuracy
-    plt.subplot(1, 2, 1)
-    sns.lineplot(data=grouped_data, x='train', y='overall_accuracy', hue='test', marker='o')
-    plt.title('Overall Accuracy by train and test')
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=grouped_data, x='group', y='overall_accuracy', marker='o')
+    plt.title('Overall Accuracy by Group')
     plt.xticks(rotation=45)
     plt.tight_layout()
+    st.pyplot(plt)
 
     # Line Plotting overall_fscore
-    plt.subplot(1, 2, 2)
-    sns.lineplot(data=grouped_data, x='train', y='overall_fscore', hue='test', marker='o')
-    plt.title('Overall Fscore by train and test')
+    plt.figure(figsize=(10, 6))
+    sns.lineplot(data=grouped_data, x='group', y='overall_fscore', marker='o')
+    plt.title('Overall Fscore by Group')
     plt.xticks(rotation=45)
     plt.tight_layout()
-
-    # Display the line plots in Streamlit
     st.pyplot(plt)
