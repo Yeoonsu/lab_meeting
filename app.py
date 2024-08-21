@@ -33,7 +33,7 @@ if uploaded_file is not None:
 
     # Extracting 'train' and 'test'
     data['train'] = data['file_name'].str.split('--').str[0].str.split('-').str[3:5].str.join('-')
-    data['test'] = data['file_name'].str.split('--').str[1].str.split('-').str[1:3].str.join('-')]
+    data['test'] = data['file_name'].str.split('--').str[1].str.split('-').str[1:3].str.join('-')
     
     # Selecting relevant columns
     data = data[['train', 'test', 'content']]
