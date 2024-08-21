@@ -76,6 +76,9 @@ if uploaded_file is not None:
             group_data = data[(data['train_group'] == train_group) & (data['test_group'] == test_group)]
             
             if not group_data.empty:
+                # Sort the data by 'train' and 'test'
+                group_data = group_data.sort_values(by=['train', 'test'])
+                
                 # Plotting overall_accuracy
                 st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
                 plt.figure(figsize=(10, 6))
