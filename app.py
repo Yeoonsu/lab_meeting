@@ -43,14 +43,14 @@ if uploaded_file is not None:
     data['group'] = data['train'] + ' - ' + data['test']
         
     # Selecting relevant columns
-    data = data[['group', 'train_group', 'test_group', 'content']]
+    data = data[['group', 'train', 'test', 'train_group', 'test_group', 'content']]
     
     # Applying the extraction functions
     data['overall_accuracy'] = data['content'].apply(extract_overall_accuracy_v2)
     data['overall_fscore'] = data['content'].apply(extract_overall_fscore_v2)
 
     # Finalizing the dataset to display and download
-    data = data[['group', 'train', 'test', 'overall_accuracy', 'overall_fscore']]
+    data = data[['group', 'train', 'test', 'train_group', 'test_group', 'overall_accuracy', 'overall_fscore']]
     
     # Display the processed data
     st.write("Processed Data:", data)
