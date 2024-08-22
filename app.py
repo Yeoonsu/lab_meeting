@@ -86,7 +86,7 @@ if uploaded_file is not None:
                     if test_group == 'CLEAN':
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Test is CLEAN)")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', color='blue', label='Overall Accuracy')
                         
                         plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: CLEAN')
                         plt.xlabel('Group (Alphabetically Sorted)')
@@ -98,7 +98,7 @@ if uploaded_file is not None:
 
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Test is CLEAN)")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
+                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', color='red', label='Overall Fscore')
                         
                         plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: CLEAN')
                         plt.xlabel('Group (Alphabetically Sorted)')
@@ -112,7 +112,7 @@ if uploaded_file is not None:
                     elif train_group == 'CLEAN':
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Train is CLEAN)")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', color='blue', label='Overall Accuracy')
                         
                         plt.title(f'Overall Accuracy for Train Group: CLEAN and Test Group: {test_group}')
                         plt.xlabel('Group (Alphabetically Sorted)')
@@ -124,7 +124,7 @@ if uploaded_file is not None:
 
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Train is CLEAN)")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
+                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', color='red', label='Overall Fscore')
                         
                         plt.title(f'Overall Fscore for Train Group: CLEAN and Test Group: {test_group}')
                         plt.xlabel('Group (Alphabetically Sorted)')
@@ -138,7 +138,7 @@ if uploaded_file is not None:
                     else:
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', color='blue',, label='Overall Accuracy')
                         
                         plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
                         plt.xlabel('Group (Alphabetically Sorted)')
@@ -150,7 +150,7 @@ if uploaded_file is not None:
 
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
+                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', color='red', label='Overall Fscore')
                         
                         plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
                         plt.xlabel('Group (Alphabetically Sorted)')
