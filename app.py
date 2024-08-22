@@ -138,7 +138,7 @@ if uploaded_file is not None:
                     else:
                         st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
                         plt.figure(figsize=(10, 6))
-                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', color='blue',, label='Overall Accuracy')
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', color='blue', label='Overall Accuracy')
                         
                         plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
                         plt.xlabel('Group (Alphabetically Sorted)')
