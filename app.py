@@ -64,51 +64,54 @@ if uploaded_file is not None:
         mime='text/csv',
     )
 
-    # Plotting the line plots for overall_accuracy and overall_fscore by each train group (comp, freq3, missing)
-    st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group and Test Group (Including Clean)")
+    # Plotting the line plots for overall_accuracy and overall_fscore by each train group and test group, including CLEAN
+    st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group and Test Group (Including CLEAN)")
 
-    train_groups = ['comp', 'freq3', 'missing']
-    test_groups = ['missing', 'comp', 'freq3']  # Clean을 포함한 모든 그룹
+    # Defining the train groups and test groups, including 'CLEAN'
+    train_groups = ['comp', 'freq3', 'missing', 'CLEAN']
+    test_groups = ['comp', 'freq3', 'missing', 'CLEAN']  # All combinations including CLEAN
 
+    # Iterate over each combination of train_group and test_group
     for train_group in train_groups:
         for test_group in test_groups:
-            # Filter the data for the current train_group and test_group
-            group_data = data[(data['train_group'] == train_group) & (data['test_group'] == test_group)]
-            
-            if not group_data.empty:
-                # Add clean data for comparison
-                clean_data = data[(data['train_group'] == 'clean') | (data['test_group'] == 'clean')]
+            if train_group != test_group:  # Ensure we consider different combinations only
+                # Filter the data for the current combination of train_group and test_group
+                group_data = data[(data['train_group'] == train_group) & (data['test_group'] == test_group)]
                 
-                # Concatenate the clean data with the current group data
+                # Add CLEAN data for comparison, even if train_group or test_group is not 'CLEAN'
+                clean_data = data[(data['train_group'] == 'CLEAN') | (data['test_group'] == 'CLEAN')]
+                
+                # Concatenate the CLEAN data with the current group data
                 combined_data = pd.concat([group_data, clean_data])
                 
-                # Sort the combined data by 'train' and 'test'
-                combined_data = combined_data.sort_values(by=['train', 'test'])
+                if not combined_data.empty:
+                    # Sort the combined data by 'train' and 'test'
+                    combined_data = combined_data.sort_values(by=['train', 'test'])
+                    
+                    # Plotting overall_accuracy
+                    st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Including CLEAN)")
+                    plt.figure(figsize=(10, 6))
+                    sns.lineplot(data=combined_data, x='train', y='overall_accuracy', marker='o', label='Train Group Accuracy')
+                    sns.lineplot(data=combined_data, x='test', y='overall_accuracy', marker='o', label='Test Group Accuracy')
+                    
+                    plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
+                    plt.xlabel('Train and Test Values (Including CLEAN)')
+                    plt.ylabel('Overall Accuracy')
+                    plt.xticks(rotation=45)
+                    plt.legend()
+                    plt.tight_layout()
+                    st.pyplot(plt)
 
-                # Plotting overall_accuracy
-                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Including Clean)")
-                plt.figure(figsize=(10, 6))
-                sns.lineplot(data=combined_data, x='train', y='overall_accuracy', marker='o', label='Train Group Accuracy')
-                sns.lineplot(data=combined_data, x='test', y='overall_accuracy', marker='o', label='Test Group Accuracy')
-                
-                plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
-                plt.xlabel('Train and Test Values (Including Clean)')
-                plt.ylabel('Overall Accuracy')
-                plt.xticks(rotation=45)
-                plt.legend()
-                plt.tight_layout()
-                st.pyplot(plt)
-
-                # Plotting overall_fscore
-                st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Including Clean)")
-                plt.figure(figsize=(10, 6))
-                sns.lineplot(data=combined_data, x='train', y='overall_fscore', marker='o', label='Train Group Fscore')
-                sns.lineplot(data=combined_data, x='test', y='overall_fscore', marker='o', label='Test Group Fscore')
-                
-                plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
-                plt.xlabel('Train and Test Values (Including Clean)')
-                plt.ylabel('Overall Fscore')
-                plt.xticks(rotation=45)
-                plt.legend()
-                plt.tight_layout()
-                st.pyplot(plt)
+                    # Plotting overall_fscore
+                    st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Including CLEAN)")
+                    plt.figure(figsize=(10, 6))
+                    sns.lineplot(data=combined_data, x='train', y='overall_fscore', marker='o', label='Train Group Fscore')
+                    sns.lineplot(data=combined_data, x='test', y='overall_fscore', marker='o', label='Test Group Fscore')
+                    
+                    plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
+                    plt.xlabel('Train and Test Values (Including CLEAN)')
+                    plt.ylabel('Overall Fscore')
+                    plt.xticks(rotation=45)
+                    plt.legend()
+                    plt.tight_layout()
+                    st.pyplot(plt)
