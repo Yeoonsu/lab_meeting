@@ -62,7 +62,9 @@ if uploaded_file is not None:
         data=csv,
         file_name='processed_data.csv',
         mime='text/csv',
-    )    # Plotting the line plots for overall_accuracy and overall_fscore by each train group and test group, including CLEAN
+    ) 
+
+    # Plotting the line plots for overall_accuracy and overall_fscore by each train group and test group, including CLEAN
     st.subheader("Line Plots of Overall Accuracy and Fscore by Train Group and Test Group (Including CLEAN)")
 
     # Defining the train groups and test groups, including 'CLEAN'
@@ -76,39 +78,86 @@ if uploaded_file is not None:
                 # Filter the data for the current combination of train_group and test_group
                 group_data = data[(data['train_group'] == train_group) & (data['test_group'] == test_group)]
                 
-                # Add CLEAN data for comparison, even if train_group or test_group is not 'CLEAN'
-                clean_data = data[(data['train_group'] == 'CLEAN') | (data['test_group'] == 'CLEAN')]
-                
-                # Concatenate the CLEAN data with the current group data
-                combined_data = pd.concat([group_data, clean_data])
-                
-                if not combined_data.empty:
-                    # Sort the combined data by 'group' name (alphabetical order)
-                    combined_data = combined_data.sort_values(by=['group'])
-                    
-                    # Plotting overall_accuracy
-                    st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Including CLEAN)")
-                    plt.figure(figsize=(10, 6))
-                    sns.lineplot(data=combined_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
-                    
-                    plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
-                    plt.xlabel('Group (Alphabetically Sorted)')
-                    plt.ylabel('Overall Accuracy')
-                    plt.xticks(rotation=45)
-                    plt.legend()
-                    plt.tight_layout()
-                    st.pyplot(plt)
+                if not group_data.empty:
+                    # Sort the group data by 'group' name (alphabetical order)
+                    group_data = group_data.sort_values(by=['group'])
 
-                    # Plotting overall_fscore
-                    st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Including CLEAN)")
-                    plt.figure(figsize=(10, 6))
-                    sns.lineplot(data=combined_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
-                    
-                    plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
-                    plt.xlabel('Group (Alphabetically Sorted)')
-                    plt.ylabel('Overall Fscore')
-                    plt.xticks(rotation=45)
-                    plt.legend()
-                    plt.tight_layout()
-                    st.pyplot(plt)
+                    # Case 1: test_group is CLEAN
+                    if test_group == 'CLEAN':
+                        st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Test is CLEAN)")
+                        plt.figure(figsize=(10, 6))
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                        
+                        plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: CLEAN')
+                        plt.xlabel('Group (Alphabetically Sorted)')
+                        plt.ylabel('Overall Accuracy')
+                        plt.xticks(rotation=45)
+                        plt.legend()
+                        plt.tight_layout()
+                        st.pyplot(plt)
+
+                        st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Test is CLEAN)")
+                        plt.figure(figsize=(10, 6))
+                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
+                        
+                        plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: CLEAN')
+                        plt.xlabel('Group (Alphabetically Sorted)')
+                        plt.ylabel('Overall Fscore')
+                        plt.xticks(rotation=45)
+                        plt.legend()
+                        plt.tight_layout()
+                        st.pyplot(plt)
+
+                    # Case 2: train_group is CLEAN
+                    elif train_group == 'CLEAN':
+                        st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy (Train is CLEAN)")
+                        plt.figure(figsize=(10, 6))
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                        
+                        plt.title(f'Overall Accuracy for Train Group: CLEAN and Test Group: {test_group}')
+                        plt.xlabel('Group (Alphabetically Sorted)')
+                        plt.ylabel('Overall Accuracy')
+                        plt.xticks(rotation=45)
+                        plt.legend()
+                        plt.tight_layout()
+                        st.pyplot(plt)
+
+                        st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore (Train is CLEAN)")
+                        plt.figure(figsize=(10, 6))
+                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
+                        
+                        plt.title(f'Overall Fscore for Train Group: CLEAN and Test Group: {test_group}')
+                        plt.xlabel('Group (Alphabetically Sorted)')
+                        plt.ylabel('Overall Fscore')
+                        plt.xticks(rotation=45)
+                        plt.legend()
+                        plt.tight_layout()
+                        st.pyplot(plt)
+
+                    # Case 3: neither train_group nor test_group is CLEAN
+                    else:
+                        st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Accuracy")
+                        plt.figure(figsize=(10, 6))
+                        sns.lineplot(data=group_data, x='group', y='overall_accuracy', marker='o', label='Overall Accuracy')
+                        
+                        plt.title(f'Overall Accuracy for Train Group: {train_group} and Test Group: {test_group}')
+                        plt.xlabel('Group (Alphabetically Sorted)')
+                        plt.ylabel('Overall Accuracy')
+                        plt.xticks(rotation=45)
+                        plt.legend()
+                        plt.tight_layout()
+                        st.pyplot(plt)
+
+                        st.write(f"Train Group: {train_group}, Test Group: {test_group} - Overall Fscore")
+                        plt.figure(figsize=(10, 6))
+                        sns.lineplot(data=group_data, x='group', y='overall_fscore', marker='o', label='Overall Fscore')
+                        
+                        plt.title(f'Overall Fscore for Train Group: {train_group} and Test Group: {test_group}')
+                        plt.xlabel('Group (Alphabetically Sorted)')
+                        plt.ylabel('Overall Fscore')
+                        plt.xticks(rotation=45)
+                        plt.legend()
+                        plt.tight_layout()
+                        st.pyplot(plt)
+
 
